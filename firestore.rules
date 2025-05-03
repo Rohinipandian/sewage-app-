@@ -1,0 +1,15 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Allow anyone to read and write to the 'reports' collection
+    match /reports/{reportId} {
+      allow read, write: if true;  // Temporarily allowing public access
+    }
+
+    // Default rule for other collections/documents
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

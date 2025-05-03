@@ -1,0 +1,470 @@
+/* CSS Variables for Theme Support */
+:root {
+  --primary-color: #3498db;
+  --secondary-color: #2ecc71;
+  --background-color: #ece8eb;
+  --card-background: #f4f4f4;
+  --text-color: #333333;
+  --border-color: #dddddd;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --alert-color: #e74c3c;
+  --alert-text: #ffffff;
+  --success-color: #2ecc71;
+  --chart-background: #ffffff;
+}
+
+/* Dark Theme Variables */
+[data-theme="dark"] {
+  --primary-color: #2980b9;
+  --secondary-color: #27ae60;
+  --background-color: #1a1a1a;
+  --card-background: #2c2c2c;
+  --text-color: #f0f0f0;
+  --border-color: #444444;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --alert-color: #c0392b;
+  --alert-text: #f0f0f0;
+  --success-color: #27ae60;
+  --chart-background: #2c2c2c;
+}
+
+.nav-links {
+  display: flex;
+  gap: 20px;
+  justify-content: flex-end;
+  margin: 10px;
+}
+.nav-links a {
+  text-decoration: none;
+  color: #fff;
+  background: #6a0dad;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: bold;
+}
+.nav-links a:hover {
+  background: #5a00c1;
+}
+
+
+/* General Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  line-height: 1.6;
+  transition: background-color 0.3s, color 0.3s;
+  padding-bottom: 50px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Header Styles */
+header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  color: var(--primary-color);
+}
+
+#datetime {
+  font-size: 1rem;
+  color: var(--text-color);
+  opacity: 0.8;
+}
+
+/* Risk Alert Banner */
+.risk-alert {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: var(--alert-color);
+  color: var(--alert-text);
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+  box-shadow: 0 2px 10px var(--shadow-color);
+}
+
+.risk-alert.hidden {
+  display: none;
+}
+
+.alert-content {
+  display: flex;
+  align-items: center;
+}
+
+.alert-icon {
+  margin-right: 10px;
+  font-size: 1.5rem;
+}
+
+#alert-close {
+  background: none;
+  border: none;
+  color: var(--alert-text);
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* Cards Section */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.card {
+  background-color: var(--card-background);
+  border-radius: 10px;
+  box-shadow: 0 4px 6px var(--shadow-color);
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px var(--shadow-color);
+}
+
+.card h2 {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  color: var(--primary-color);
+}
+
+.card p {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+/* Live Chart Section */
+.chart-section {
+  background-color: var(--card-background);
+  border-radius: 10px;
+  box-shadow: 0 4px 6px var(--shadow-color);
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.chart-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  color: var(--primary-color);
+}
+
+.chart-container {
+  width: 100%;
+  height: 300px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+#live-chart {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background-color: var(--chart-background);
+}
+
+/* Query Submission Form */
+.query-section {
+  background-color: var(--card-background);
+  border-radius: 10px;
+  box-shadow: 0 4px 6px var(--shadow-color);
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.query-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  color: var(--primary-color);
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.form-group input[type="file"] {
+  padding: 5px;
+}
+
+#get-location {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 15px;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#get-location:hover {
+  background-color: #2980b9;
+}
+
+.submit-btn {
+  background-color: var(--secondary-color);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.submit-btn:hover {
+  background-color: #27ae60;
+}
+
+/* Chatbot Section */
+.chatbot-section {
+  background-color: var(--card-background);
+  border-radius: 10px;
+  box-shadow: 0 4px 6px var(--shadow-color);
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.chatbot-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  color: var(--primary-color);
+}
+
+.chatbot-container {
+  display: flex;
+  flex-direction: column;
+  height: 400px;
+}
+
+#chat-messages {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 15px;
+  background-color: var(--background-color);
+  border-radius: 5px;
+  margin-bottom: 15px;
+  border: 1px solid var(--border-color);
+}
+
+.chat-input {
+  display: flex;
+  gap: 10px;
+}
+
+#user-message {
+  flex-grow: 1;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+#send-message {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#send-message:hover {
+  background-color: #2980b9;
+}
+
+.bot-message, .user-message {
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  max-width: 80%;
+}
+
+.bot-message {
+  background-color: var(--primary-color);
+  color: white;
+  align-self: flex-start;
+  border-bottom-left-radius: 0;
+}
+
+.user-message {
+  background-color: var(--secondary-color);
+  color: white;
+  margin-left: auto;
+  border-bottom-right-radius: 0;
+}
+
+/* Voice Assistant Button */
+.voice-control {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 900;
+}
+
+#voice-btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 4px 8px var(--shadow-color);
+  transition: all 0.3s;
+}
+
+#voice-btn:hover {
+  transform: scale(1.1);
+}
+
+#voice-btn.active {
+  background-color: var(--secondary-color);
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 900;
+}
+
+#theme-toggle-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--card-background);
+  border: 1px solid var(--border-color);
+  font-size: 1.2rem;
+  cursor: pointer;
+  box-shadow: 0 2px 5px var(--shadow-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+#theme-toggle-btn:hover {
+  transform: scale(1.1);
+}
+
+.light-mode-icon {
+  display: none;
+}
+
+.dark-mode-icon {
+  display: block;
+}
+
+[data-theme="dark"] .light-mode-icon {
+  display: block;
+}
+
+[data-theme="dark"] .dark-mode-icon {
+  display: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
+  }
+  
+  header h1 {
+    font-size: 2rem;
+  }
+  
+  .cards {
+    grid-template-columns: 1fr;
+  }
+  
+  .chart-container {
+    height: 250px;
+  }
+  
+  .chatbot-container {
+    height: 300px;
+  }
+  
+  .theme-toggle {
+    top: 10px;
+    right: 10px;
+  }
+  
+  #voice-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .chart-container {
+    height: 200px;
+  }
+  
+  .form-group label {
+    font-size: 0.9rem;
+  }
+  
+  .submit-btn, #send-message {
+    padding: 8px 15px;
+  }
+  
+  #voice-btn {
+    width: 45px;
+    height: 45px;
+    font-size: 1rem;
+    bottom: 10px;
+    right: 10px;
+  }
+}

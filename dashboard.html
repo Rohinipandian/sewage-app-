@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f5f5f5;
+      padding: 20px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+
+    th {
+      background: #1c90cf;
+      color: white;
+    }
+
+    tr:hover {
+      background: #f1f1f1;
+    }
+
+    img {
+      max-width: 150px;
+      border-radius: 5px;
+    }
+  </style>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore-compat.js"></script>
+</head>
+<body>
+
+<h2>Submitted Reports</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Location</th>
+      <th>Photo</th>
+      <th>Submitted At</th>
+    </tr>
+  </thead>
+  <tbody id="reports-table-body">
+    <!-- Reports will be injected here -->
+  </tbody>
+</table>
+
+<script>
+  // Firebase config
+  const firebaseConfig = {
+    apiKey: "AIzaSyAakB9v-OrKoJt9hS7TzjKZ7znDNkBmahA",
+    authDomain: "sewage-app-93e97.firebaseapp.com",
+    projectId: "sewage-app-93e97",
+    storageBucket: "sewage-app-93e97.appspot.com",
+    messagingSenderId: "1063262132715",
+    appId: "1:1063262132715:web:811b2d281596eef843e1ae"
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  // Protect page
+  if (sessionStorage.getItem('adminLoggedIn') !== 'true') {
+    alert('Unauthorized access. Redirecting...');
+    window.location.href = 'admin.html';
+  }
+  // Load reports from Firestore
+ // Load reports from Firestore
+ function loadReports() {
+  const tableBody = document.getElementById('reports-table-body');
+  tableBody.innerHTML = '<tr><td colspan="5">Loading reports...</td></tr>';
+
+  console.log("Starting to load reports...");
+  db.collection('reports').get()
+    .then(snapshot => {
+      console.log("Query successful, documents found:", snapshot.size);
+      
+      if (snapshot.empty) {
+        tableBody.innerHTML = '<tr><td colspan="5">No reports submitted yet.</td></tr>';
+        return;
+      }
+
+      tableBody.innerHTML = '';
+      snapshot.forEach(doc => {
+        console.log("Document ID:", doc.id);
+        const report = doc.data();
+        console.log("Document data:", report);
+        
+        // Inspect each field to see what's available
+        console.log("Fields in this document:");
+        for (const field in report) {
+          console.log(`- ${field}: ${typeof report[field]}`);
+        }
+        
+        // Create a row with whatever data is available
+        const row = document.createElement('tr');
+        
+        // Type column
+        const typeCell = document.createElement('td');
+        typeCell.textContent = report.type || report.issue_type || 'Unknown';
+        row.appendChild(typeCell);
+        
+        // Description column
+        const descCell = document.createElement('td');
+        descCell.textContent = report.description || report.details || report.issue_description || 'No description';
+        row.appendChild(descCell);
+        
+        // Location column
+        const locCell = document.createElement('td');
+        locCell.textContent = report.location || report.address || 'No location';
+        row.appendChild(locCell);
+        
+        // Photo column
+        const photoCell = document.createElement('td');
+        const photoUrl = report.photoURL || report.photo || report.image || report.imageUrl;
+        if (photoUrl) {
+          const img = document.createElement('img');
+          img.src = photoUrl;
+          img.alt = "Report Photo";
+          img.style.maxWidth = "150px";
+          photoCell.appendChild(img);
+        } else {
+          photoCell.textContent = 'No Photo';
+        }
+        row.appendChild(photoCell);
+        
+        // Date column - handle different timestamp formats
+        const dateCell = document.createElement('td');
+        let dateStr = 'Unknown date';
+        
+        if (report.submittedAt) {
+          // If it's a Firebase timestamp
+          if (report.submittedAt.seconds) {
+            dateStr = new Date(report.submittedAt.seconds * 1000).toLocaleString();
+          } 
+          // If it's already a date string
+          else if (typeof report.submittedAt === 'string') {
+            dateStr = report.submittedAt;
+          }
+        } else if (report.timestamp) {
+          // Try alternate field name
+          if (report.timestamp.seconds) {
+            dateStr = new Date(report.timestamp.seconds * 1000).toLocaleString();
+          } else if (typeof report.timestamp === 'string') {
+            dateStr = report.timestamp;
+          }
+        } else if (report.date || report.created_at || report.reportedAt) {
+          // Try other common field names
+          dateStr = report.date || report.created_at || report.reportedAt;
+        }
+        
+        dateCell.textContent = dateStr;
+        row.appendChild(dateCell);
+        
+        // Add the row to the table
+        tableBody.appendChild(row);
+      });
+    })
+    .catch(err => {
+      console.error("Query failed:", err);
+      console.error("Error type:", err.name);
+      console.error("Error message:", err.message);
+      tableBody.innerHTML = `<tr><td colspan="5">Error loading reports: ${err.message}</td></tr>`;
+    });
+}
+
+  document.addEventListener('DOMContentLoaded', loadReports);
+</script>
+
+</body>
+</html>
