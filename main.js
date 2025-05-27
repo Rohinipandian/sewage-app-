@@ -188,7 +188,7 @@ userInput.addEventListener('keypress', function(e) {
   }
 });
 
-// ThingSpeak data fetching functionality - integrated from your code
+// ThingSpeak data fetching functionality - FIXED VERSION
 async function fetchSensorData() {
   const url = `https://api.thingspeak.com/channels/${CHANNEL_ID}/feeds.json?results=1&api_key=${READ_API_KEY}`;
   
@@ -197,12 +197,15 @@ async function fetchSensorData() {
     const data = await response.json();
     const feed = data.feeds[0];
     
-    const ppm = parseFloat(feed.field1);
-    const distance = parseFloat(feed.field2);
-    const absorbent = feed.field4 || "Pending";
+    // Extract data from ThingSpeak fields
+    const ppm = parseFloat(feed.field1);        // Gas level in PPM
+    const distance = parseFloat(feed.field2);   // Distance in cm
+    const absorbent = feed.field4 || "Pending"; // Absorbent status
     
- document.getElementById("distance").innerText = !isNaN(gasValue) ? gasValue ;
-document.getElementById("ppm").innerText = !isNaN(waterLevel) ? waterLevel;
+    // Update display elements with proper units
+    document.getElementById("ppm").innerText = !isNaN(ppm) ? `${ppm} PPM` : "Pending";
+    document.getElementById("distance").innerText = !isNaN(distance) ? `${distance} cm` : "Pending";
+    document.getElementById("absorbent").innerText = absorbent;
     
     // Calculate and display Risk Level
     const riskEl = document.getElementById("risk");
@@ -211,7 +214,7 @@ document.getElementById("ppm").innerText = !isNaN(waterLevel) ? waterLevel;
       const risk = calculateRiskLevel(ppm, distance);
       riskEl.innerText = risk;
       
-      // Color code
+      // Color code and alert handling
       if (risk === "High") {
         riskEl.style.color = "red";
         showRiskAlert(true, `Warning: High risk level detected! Gas: ${ppm} PPM, Level: ${distance} cm`);
@@ -230,6 +233,9 @@ document.getElementById("ppm").innerText = !isNaN(waterLevel) ? waterLevel;
     // Update live chart if needed
     updateLiveChart();
     
+    // Log successful data fetch for debugging
+    console.log(`Data updated - PPM: ${ppm}, Distance: ${distance}cm, Risk: ${riskEl.innerText}`);
+    
   } catch (error) {
     console.error("Error fetching data:", error);
     document.getElementById("ppm").innerText = "Error";
@@ -240,11 +246,16 @@ document.getElementById("ppm").innerText = !isNaN(waterLevel) ? waterLevel;
 }
 
 function calculateRiskLevel(ppm, distance) {
+  // High risk: High gas concentration OR low sewage level (close to sensor)
   if (ppm > 200 || distance < 20) {
     return "High";
-  } else if (ppm > 100 || distance < 50) {
+  } 
+  // Moderate risk: Medium gas concentration OR medium sewage level
+  else if (ppm > 100 || distance < 50) {
     return "Moderate";
-  } else {
+  } 
+  // Low risk: Safe conditions
+  else {
     return "Low";
   }
 }
