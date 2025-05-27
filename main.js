@@ -201,11 +201,8 @@ async function fetchSensorData() {
     const distance = parseFloat(feed.field2);
     const absorbent = feed.field4 || "Pending";
     
-    // Display Gas Level (PPM) - now goes to ppm element
-document.getElementById("ppm").innerText = !isNaN(gasValue) ? gasValue + " PPM" : "N/A";
-        
-// Display Distance/Water Level (%) - now goes to distance element  
-document.getElementById("distance").innerText = !isNaN(waterLevel) ? waterLevel + " %" : "N/A";
+ document.getElementById("distance").innerText = !isNaN(gasValue) ? gasValue + " %" : "N/A";
+document.getElementById("ppm").innerText = !isNaN(waterLevel) ? waterLevel + " PPM" : "N/A";
     
     // Calculate and display Risk Level
     const riskEl = document.getElementById("risk");
