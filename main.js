@@ -202,13 +202,13 @@ async function fetchSensorData() {
     const absorbent = feed.field4 || "Pending";
     
     // Display PPM
-    document.getElementById("ppm").innerText = absorbent + " cm";
+    document.getElementById("ppm").innerText = absorbent + " PPM";
         
     // Display Distance
-    document.getElementById("distance").innerText = !isNaN(distance) ? distance + " cm" : "N/A";
+    document.getElementById("distance").innerText = !isNaN(distance) ? distance + " PPM" : "N/A";
     
     // Display Absorbent
-    document.getElementById("absorbent").innerText = !isNaN(ppm) ? ppm + " PPM" : "N/A";
+    document.getElementById("absorbent").innerText = !isNaN(ppm) ? ppm + " cm" : "N/A";
     
     // Calculate and display Risk Level
     const riskEl = document.getElementById("risk");
